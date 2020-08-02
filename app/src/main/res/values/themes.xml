@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/backgroundAppBar</item>
+        <item name="android:background">@color/background</item>
+        <item name="android:actionBarStyle">@style/myActionBar</item>
+        <item name="titleTextColor">#FFFFFF</item>
+        <item name="actionMenuTextColor">#FFFFFF</item>
+        <item name="android:actionMenuTextColor">#FFFFFF</item>
+    </style>
+</resources>
