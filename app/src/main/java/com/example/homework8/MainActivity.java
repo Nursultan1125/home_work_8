@@ -1,13 +1,13 @@
 package com.example.homework8;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.homework8.models.Node;
@@ -21,27 +21,29 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     NodeAdapter adapter;
     FloatingActionButton floatingActionButton;
-    ArrayList<Node> list;
+    ArrayList<Node> nodes = new ArrayList<>();
+    static final String NODE_LIST_KEY = "NODE_LIST_KEY";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        list = new ArrayList<>();
+
         listView = findViewById(R.id.nodeList);
         floatingActionButton = findViewById(R.id.fab);
 
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        list.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        adapter = new NodeAdapter(list, getApplicationContext());
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        adapter = new NodeAdapter(nodes, getApplicationContext());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,8 +65,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         Node node = data.getParcelableExtra(Node.class.getSimpleName());
-        list.add(node);
+        nodes.add(node);
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        outState.putParcelableArrayList(NODE_LIST_KEY, nodes);
+        adapter.notifyDataSetChanged();
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        nodes = savedInstanceState.<Node>getParcelableArrayList(NODE_LIST_KEY);
+        adapter.notifyDataSetChanged();
+    }
 }

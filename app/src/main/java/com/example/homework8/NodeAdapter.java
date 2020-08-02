@@ -15,6 +15,7 @@ import com.example.homework8.models.Node;
 import java.util.ArrayList;
 
 public class NodeAdapter extends ArrayAdapter<Node> {
+    ArrayList<Node> notes;
 
     public NodeAdapter(ArrayList<Node> data, @NonNull Context context) {
         super(context, R.layout.row, data);
