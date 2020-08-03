@@ -6,15 +6,15 @@ import java.util.ArrayList;
 
 public interface MainContract {
     interface View{
-
+        void setNodes(ArrayList<Node> nodes);
+        void updateNodeList();
     }
     interface Repository{
         ArrayList<Node> getNodes();
-        ArrayList<Node> addNode();
-        ArrayList<Node> removeNode();
     }
 
     interface Presenter{
         void onClickAddNodeButton();
+        void addNode(Node node);
     }
 }

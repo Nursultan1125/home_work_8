@@ -2,55 +2,41 @@ package com.example.homework8;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-
+import com.example.homework8.controller.MainPresenter;
 import com.example.homework8.models.Node;
+import com.example.homework8.services.MainContract;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     private static final int REQ_CODE_CHILD = 1;
     ListView listView;
     NodeAdapter adapter;
-    FloatingActionButton floatingActionButton;
     ArrayList<Node> nodes = new ArrayList<>();
     static final String NODE_LIST_KEY = "NODE_LIST_KEY";
+    MainPresenter controller;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         listView = findViewById(R.id.nodeList);
-        floatingActionButton = findViewById(R.id.fab);
 
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
-        nodes.add(new Node("Text", "Body sdfsd fsdfsdfsd"));
+        controller = new MainPresenter(this);
+    }
+
+    @Override
+    public void setNodes(ArrayList<Node> nodes){
         adapter = new NodeAdapter(nodes, getApplicationContext());
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
     }
 
     public void onClickFAB(View view) {
@@ -65,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         Node node = data.getParcelableExtra(Node.class.getSimpleName());
-        nodes.add(node);
-        adapter.notifyDataSetChanged();
+        controller.addNode(node);
     }
 
     @Override
@@ -80,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         nodes = savedInstanceState.<Node>getParcelableArrayList(NODE_LIST_KEY);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateNodeList(){
         adapter.notifyDataSetChanged();
     }
 }
